@@ -1,14 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 long long merge_sort(long long left, long long right, long long arr[], long long* p);
 
 long long merge(long long left, long long mid, long long right, long long arr[], long long* p);
 
 int main(){
-	long long n, arr[30000], i, count=0;
+	long long n, *arr, i, count=0;
 	
 	scanf("%lld", &n);
-	
+	arr = (long long*) malloc(n * sizeof(long long));
 	for(i=0;i<n;i++){
 		scanf("%lld", &arr[i]);
 	}

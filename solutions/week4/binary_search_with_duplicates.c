@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 long binary_search(long* dizi, long low, long high, long x){
 	long mid = (high - low) / 2 + low;
@@ -14,16 +15,17 @@ long binary_search(long* dizi, long low, long high, long x){
 }
 
 int main(){
-	long a[30000], i, j, n, m, x;
+	long *arr, i, j, n, m, x;
 	
 	scanf("%ld", &n);
-	for(i=0;i<n;i++) scanf("%ld", &a[i]);
+	arr = (long*) malloc(n * sizeof(long));
+	for(i=0;i<n;i++) scanf("%ld", &arr[i]);
 	
 	scanf("%ld", &m);
 	
 	for(i=0;i<m;i++){
 		scanf("%ld", &x);
-		printf("%ld ", binary_search(a, 0, n-1, x));
+		printf("%ld ", binary_search(arr, 0, n-1, x));
 	}
 	
 	return 0;
