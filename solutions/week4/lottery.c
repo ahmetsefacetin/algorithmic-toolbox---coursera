@@ -19,7 +19,7 @@ yolluyorum. Çünkü sað uçlar için pointten küçüklerin sayýsý önemli.
 long long binary_search_counter(long long* dizi, long long n, long long low, long long high, long long x){
 	long long mid = (high - low) / 2 + low;
 	
-	if(low > high) return low;
+	if(low > high) return low; //eðer x dizide yoksa bu fonksiyon hatalý çalýþýr ancak soruda zaten var olan bir elemaný aramak için kullanýyoruz
 	
 //	if(dizi[mid] == x){
 //	while(mid+1 < n && dizi[mid] == dizi[mid+1]) mid++;
@@ -34,7 +34,7 @@ long long rand_pivot(long long first, long long last){
 	return (rand() % (last - first + 1)) + first;
 }
 
-long long pivot(long long* arr, long long first, long long last){
+void pivot(long long* arr, long long first, long long last, long long* m1, long long* m2){
 	long long i, j, k, temp, pivot_ind;
 	
 	pivot_ind = rand_pivot(first, last);
@@ -43,9 +43,9 @@ long long pivot(long long* arr, long long first, long long last){
 	arr[pivot_ind] = arr[first];
 	arr[first] = temp;
 	
-	i = first + 1; // i, pivotdan küçüklerin olduðu kýsmýn bir saðýný tutar. j ise pivotdan büyüklerin olduðu kýsmýn son elemanýný.
-	k = first + 1;
-	
+	i = first + 1; // i, pivotdan küçüklerin olduðu kýsmýn bir saðýný yani eþitlerin ilkini tutar.
+	k = first + 1; // k ise eþitlerin olduðu kýsmýn bir saðýný yani büyüklerin ilkini tutar.
+	 
 	for(j=first+1;j<=last;j++){
 		if(arr[first] > arr[j]){
 			if(j != k){
@@ -53,11 +53,13 @@ long long pivot(long long* arr, long long first, long long last){
 				arr[k] = arr[i];
 				arr[i] = temp;	
 			}
+			
 			temp = arr[j];
 			arr[j] = arr[i];
 			arr[i] = temp;
-			k++;
+		
 			i++;
+			k++;
 		}
 		else if(arr[first] == arr[j]){
 			temp = arr[j];
@@ -66,25 +68,20 @@ long long pivot(long long* arr, long long first, long long last){
 			k++;
 		}
 	}
-
+	
 	temp = arr[first];
 	arr[first] = arr[i-1];
 	arr[i-1] = temp;
-	return i-1;
-}
-
-long long find_m2(long long* arr, long long m1, long long last){
-	long long i = m1;
-	while(arr[m1] == arr[i]) i++;
-	return i;
+	
+	*m1 = i-1;
+	*m2 = k;
 }
 
 void quick_sort(long long* arr, long long first, long long last){
 	long long m1, m2;
 	if(first < last){
-		m1 = pivot(arr, first, last);
-		m2 = find_m2(arr, m1, last);
-		quick_sort(arr, first, m1-1);
+		pivot(arr, first, last, &m1, &m2);
+		quick_sort(arr, first, m1);
 		quick_sort(arr, m2, last);
 	}
 }
